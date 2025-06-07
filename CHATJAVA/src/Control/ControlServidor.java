@@ -8,20 +8,23 @@ import Modelo.Servidor;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Random;
 
 /**
  *
  * @author hailen
  */
 public class ControlServidor {
-    
+
     private ControlPrincipalServidor cPrinc;
 
     private Servidor servidor;
     private ServidorThread servidorThread;
+    private Random random;
 
     public ControlServidor(ControlPrincipalServidor cPrinc) {
         this.cPrinc = cPrinc;
+        random = new Random();
         servidor = new Servidor();
         runServer();
     }
@@ -53,9 +56,27 @@ public class ControlServidor {
         }
     }
 
+    public String banearPalabras(String mensaje) {
+        String[] palabras = mensaje.split("\\s+");
+        StringBuilder resultado = new StringBuilder();
+
+        for (String palabra : palabras) {
+            String palabraLimpia = palabra.toLowerCase().replaceAll("[^a-záéíóúüñ]", "");
+
+            if (servidor.getGroserias().contains(palabraLimpia)) {
+                String reemplazo = servidor.getReemplazos().get(random.nextInt(servidor.getReemplazos().size()));
+                resultado.append(reemplazo);
+            } else {
+                resultado.append(palabra);
+            }
+            resultado.append(" ");
+        }
+
+        return resultado.toString().trim();
+    }
+
     public ControlPrincipalServidor getcPrinc() {
         return cPrinc;
     }
-    
-    
+
 }

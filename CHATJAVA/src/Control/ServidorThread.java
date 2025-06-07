@@ -75,7 +75,7 @@ public class ServidorThread extends Thread {
                     case 1://envio de mensage a todos
                         mencli = entrada.readUTF();
                         cServidor.getcPrinc().getcVentana().getvServidor().mostrar("mensaje recibido " + mencli);
-                        enviaMsg(mencli);
+                        enviaMsg(cServidor.banearPalabras(mencli));
                         break;
                     case 2://envio de lista de activos
                         numUsers = clientesActivos.size();
@@ -87,7 +87,7 @@ public class ServidorThread extends Thread {
                     case 3: // envia mensage a uno solo
                         amigo = entrada.readUTF();//captura nombre de amigo
                         mencli = entrada.readUTF();//mensage enviado
-                        enviaMsg(amigo, mencli);
+                        enviaMsg(amigo, cServidor.banearPalabras(mencli));
                         break;
                 }
             } catch (IOException e) {
