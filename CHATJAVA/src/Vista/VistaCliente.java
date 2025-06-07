@@ -7,6 +7,7 @@ package Vista;
 import Control.ControlVentanaCliente;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Vector;
 import javax.swing.*;
 
@@ -129,8 +130,6 @@ public class VistaCliente extends JFrame {
     }
 
     // Métodos para interactuar con el controlador
-
-
     public void setNombreUser(String user) {
         //lblNomUser.setText("Usuario " + user);
     }
@@ -168,6 +167,11 @@ public class VistaCliente extends JFrame {
         });
     }
 
+    public void actualizarListaUsuarios(String[] usuarios) {
+        Vector<String> nuevosUsuarios = new Vector<>(Arrays.asList(usuarios));
+        ponerActivos(nuevosUsuarios); 
+    }
+
     public String getMensaje() {
         return txtMensage.getText();
     }
@@ -198,6 +202,5 @@ public class VistaCliente extends JFrame {
     public Vector<String> getNomUsers() {
         return nomUsers;
     }
-    
-    
+
 }
