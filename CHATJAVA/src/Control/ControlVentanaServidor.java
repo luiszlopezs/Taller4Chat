@@ -21,7 +21,7 @@ public class ControlVentanaServidor implements ActionListener {
     public ControlVentanaServidor(ControlPrincipalServidor cPrinc) {
         this.cPrinc = cPrinc;
         vServidor = new VistaServidor(this);
-        vServidor.setVisible(true);
+        
     }
 
     public void actionPerformed(ActionEvent e) {

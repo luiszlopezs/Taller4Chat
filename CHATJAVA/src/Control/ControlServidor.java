@@ -8,6 +8,7 @@ import Modelo.Servidor;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Properties;
 import java.util.Random;
 
 /**
@@ -26,11 +27,14 @@ public class ControlServidor {
         this.cPrinc = cPrinc;
         random = new Random();
         servidor = new Servidor();
-        runServer();
+
     }
 
     public void runServer() {
         try {
+            cPrinc.metodoCortoListasBan();
+            System.out.println(servidor.getGroserias());
+            System.out.println(servidor.getReemplazos());
             servidor.setServ(new ServerSocket(8081));
             servidor.setServ2(new ServerSocket(8082));
             cPrinc.getcVentana().getvServidor().mostrar(".::Servidor activo :");
@@ -48,12 +52,14 @@ public class ControlServidor {
                 }
                 ServidorThread user = new ServidorThread(sock, sock2, this);
                 user.start();
+
             }
 
         } catch (IOException e) {
             //muestra un mensaje en la vista del server
             cPrinc.getcVentana().getvServidor().mostrar("error :" + e);
         }
+
     }
 
     public String banearPalabras(String mensaje) {
@@ -73,6 +79,33 @@ public class ControlServidor {
         }
 
         return resultado.toString().trim();
+    }
+
+    public void inicializarDesdeProperties(Properties props) {
+
+        int i = 1;
+        int i2 = 1;
+        while (true) {
+            if (props.getProperty("groseria" + i) == null) {
+                break;
+            }
+            servidor.getGroserias().add(props.getProperty("groseria" + i));
+
+            // Leer los valores
+            // Si no hay más gatos, salir del ciclo
+            i++;
+
+        }
+
+        while (true) {
+
+            if (props.getProperty("reemplazo" + i2) == null) {
+                break;
+            }
+            servidor.getReemplazos().add(props.getProperty("reemplazo" + i2));
+
+            i2++;
+        }
     }
 
     public ControlPrincipalServidor getcPrinc() {
