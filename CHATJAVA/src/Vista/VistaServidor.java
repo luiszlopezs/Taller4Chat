@@ -43,7 +43,7 @@ public class VistaServidor extends JFrame {
     public File rutaJfileChooserListasBan() {
         File f;
         JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
-        fc.showDialog(null, "Seleccionar Archivo Gato Properties");
+        fc.showDialog(null, "Seleccionar Archivo Lista Groserias/Reemplazo");
 
         f = fc.getSelectedFile();
         
