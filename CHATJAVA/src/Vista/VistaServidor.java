@@ -12,7 +12,7 @@ import java.util.*;
 import javax.swing.*;
 
 public class VistaServidor extends JFrame {
-    
+
     private ControlVentanaServidor cVentana;
     JTextArea txaMostrar;
 
@@ -24,7 +24,7 @@ public class VistaServidor extends JFrame {
         this.setContentPane(new JScrollPane(txaMostrar));
         setSize(350, 350);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
+        
 
     }
 
@@ -38,5 +38,15 @@ public class VistaServidor extends JFrame {
 
     public void mostrar(String msg) {
         txaMostrar.append(msg + "\n");
+    }
+
+    public File rutaJfileChooserListasBan() {
+        File f;
+        JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
+        fc.showDialog(null, "Seleccionar Archivo Gato Properties");
+
+        f = fc.getSelectedFile();
+        
+        return f;
     }
 }

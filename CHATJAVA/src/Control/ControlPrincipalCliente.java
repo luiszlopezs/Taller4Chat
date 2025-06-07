@@ -4,7 +4,10 @@
  */
 package Control;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Properties;
 import java.util.Vector;
 
 /**
@@ -12,12 +15,12 @@ import java.util.Vector;
  * @author hailen
  */
 public class ControlPrincipalCliente {
-    
+
     private ControlVentanaCliente cVentana;
     private ControlCliente cCliente;
 
     public ControlPrincipalCliente() throws IOException {
-        
+
         cVentana = new ControlVentanaCliente(this);
         cCliente = new ControlCliente(this);
         cVentana.getvCliente().ponerActivos(cCliente.pedirUsuarios());
@@ -41,24 +44,24 @@ public class ControlPrincipalCliente {
     public void setcCliente(ControlCliente cCliente) {
         this.cCliente = cCliente;
     }
-    
-    public void enviarMensajePrivado(String amigo, String contenido){
+
+    public void enviarMensajePrivado(String amigo, String contenido) {
         try {
             cCliente.enviarMensajePrivado(amigo, contenido);
         } catch (IOException ex) {
             System.getLogger(ControlPrincipalCliente.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
-    
-    public void enviarMensajePublico(String contenido){
+
+    public void enviarMensajePublico(String contenido) {
         try {
             cCliente.enviarMensajePublico(contenido);
         } catch (IOException ex) {
             System.getLogger(ControlPrincipalCliente.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
-    
-    public Vector<String> pedirUsuarios(){
+
+    public Vector<String> pedirUsuarios() {
         try {
             return cCliente.pedirUsuarios();
         } catch (IOException ex) {
@@ -66,10 +69,7 @@ public class ControlPrincipalCliente {
             return null;
         }
     }
-    
-    
-    
-    
-    
-    
+
+
+
 }

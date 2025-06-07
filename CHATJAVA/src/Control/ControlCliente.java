@@ -6,6 +6,7 @@ package Control;
 
 import Modelo.Cliente;
 import java.io.IOException;
+import java.util.Properties;
 import java.util.Vector;
 
 /**
@@ -27,7 +28,7 @@ public class ControlCliente {
         cliente.setNombre(cPrinc.getcVentana().getNombre());
 
         cliente.conexion();
-        
+
         System.out.println("Antes de crear ClienteThread");
         clienteThread = new ClienteThread(cliente.getEntrada2(), this);
         System.out.println("Después de crear ClienteThread");
@@ -49,6 +50,8 @@ public class ControlCliente {
         cliente.enviarMensajePrivado(amigo, mensaje);
 
     }
+
+
 
     public Vector<String> pedirUsuarios() throws IOException {
         return cliente.pedirUsuarios();
@@ -78,9 +81,5 @@ public class ControlCliente {
     public ControlPrincipalCliente getcPrinc() {
         return cPrinc;
     }
-    
-    
-    
-    
 
 }

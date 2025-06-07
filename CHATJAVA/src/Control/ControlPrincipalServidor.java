@@ -4,21 +4,27 @@
  */
 package Control;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 /**
  *
  * @author hailen
  */
 public class ControlPrincipalServidor {
-    
+
     private ControlServidor cServidor;
     private ControlVentanaServidor cVentana;
 
     public ControlPrincipalServidor() {
-       
-       cVentana = new ControlVentanaServidor(this);
-       cServidor = new ControlServidor(this);
-       
-        
+
+        cVentana = new ControlVentanaServidor(this);
+        cServidor = new ControlServidor(this);
+        cServidor.runServer();
+        System.out.println("ssssssssssssssssss");
+
     }
 
     public ControlServidor getcServidor() {
@@ -28,8 +34,26 @@ public class ControlPrincipalServidor {
     public ControlVentanaServidor getcVentana() {
         return cVentana;
     }
+
+    public void inicializarListasBan(File archivo) {
+        if (archivo != null) {
+            try (FileInputStream fis = new FileInputStream(archivo)) {
+                Properties props = new Properties();
+                props.load(fis);
+
+                cServidor.inicializarDesdeProperties(props);
+
+            } catch (IOException e) {
+
+            }
+        } else {
+
+        }
+    }
     
-    
-    
-    
+    public void metodoCortoListasBan(){
+        inicializarListasBan(cVentana.getvServidor().rutaJfileChooserListasBan());
+        cVentana.getvServidor().setVisible(true);
+    }
+
 }
