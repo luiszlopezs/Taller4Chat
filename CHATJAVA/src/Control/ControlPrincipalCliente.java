@@ -36,6 +36,8 @@ public class ControlPrincipalCliente {
     public void setcVentana(ControlVentanaCliente cVentana) {
         this.cVentana = cVentana;
     }
+    
+    
 
     public ControlCliente getcCliente() {
         return cCliente;
@@ -69,6 +71,12 @@ public class ControlPrincipalCliente {
             return null;
         }
     }
+    
+    public void pasarListaActivos(){
+        Vector<String> usuariosEnLinea = pedirUsuarios();
+        cVentana.getvCliente().ponerActivos(usuariosEnLinea);
+    }
+    
 
 
 

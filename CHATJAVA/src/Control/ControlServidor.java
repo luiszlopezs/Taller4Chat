@@ -10,6 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
 import java.util.Random;
+import java.util.Vector;
 
 /**
  *
@@ -80,6 +81,7 @@ public class ControlServidor {
 
         return resultado.toString().trim();
     }
+    
 
     public void inicializarDesdeProperties(Properties props) {
 
@@ -92,7 +94,6 @@ public class ControlServidor {
             servidor.getGroserias().add(props.getProperty("groseria" + i));
 
             // Leer los valores
-            // Si no hay más gatos, salir del ciclo
             i++;
 
         }
@@ -111,5 +112,15 @@ public class ControlServidor {
     public ControlPrincipalServidor getcPrinc() {
         return cPrinc;
     }
+
+    public Servidor getServidor() {
+        return servidor;
+    }
+
+    public ServidorThread getServidorThread() {
+        return servidorThread;
+    }
+    
+    
 
 }

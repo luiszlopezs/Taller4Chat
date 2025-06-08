@@ -51,11 +51,12 @@ public class ControlCliente {
 
     }
 
-
+    public void actualizarListaUsuarios(String[] usuarios) {
+        cPrinc.getcVentana().actualizarListaUsuarios(usuarios);
+    }
 
     public Vector<String> pedirUsuarios() throws IOException {
         return cliente.pedirUsuarios();
-
     }
 
     public Cliente getCliente() {

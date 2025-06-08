@@ -60,7 +60,7 @@ public class ServidorThread extends Thread {
             salida = new DataOutputStream(scli.getOutputStream());
             salida2 = new DataOutputStream(scli2.getOutputStream());
             this.setNameUser(entrada.readUTF());
-            enviaUserActivos();
+            enviarListaUsuariosConectados(); //Se envía la lista actualizada a cada cliente
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -72,7 +72,7 @@ public class ServidorThread extends Thread {
             try {
                 opcion = entrada.readInt();
                 switch (opcion) {
-                    case 1://envio de mensage a todos
+                    case 1://envio de mensaje a todos
                         mencli = entrada.readUTF();
                         cServidor.getcPrinc().getcVentana().getvServidor().mostrar("mensaje recibido " + mencli);
                         enviaMsg(cServidor.banearPalabras(mencli));
@@ -97,6 +97,8 @@ public class ServidorThread extends Thread {
         }
         cServidor.getcPrinc().getcVentana().getvServidor().mostrar("Se removio un usuario");
         clientesActivos.removeElement(this);
+        enviarListaUsuariosConectados(); // después de remover un cliente, se vuelve a enviar la lista de usuarios actualizada
+        
         try {
             cServidor.getcPrinc().getcVentana().getvServidor().mostrar("Se desconecto un usuario");
             scli.close();
@@ -119,21 +121,25 @@ public class ServidorThread extends Thread {
         }
     }
 
-    public void enviaUserActivos() {
-        ServidorThread user = null;
-        for (int i = 0; i < clientesActivos.size(); i++) {
-            try {
-                user = clientesActivos.get(i);
-                if (user == this) {
-                    continue;//ya se lo envie
-                }
-                user.salida2.writeInt(2);//opcion de agregar 
-                user.salida2.writeUTF(this.getNameUser());
-            } catch (IOException e) {
-                e.printStackTrace();
+    public void enviarListaUsuariosConectados() {
+    try {
+        Vector<String> nombres = new Vector<>();
+        for (ServidorThread cli : clientesActivos) {
+            nombres.add(cli.getNameUser());
+        }
+
+        for (ServidorThread cli : clientesActivos) {
+            cli.salida2.writeInt(4); // nuevo código para actualizar lista de usuarios
+            cli.salida2.writeInt(nombres.size());
+            for (String nombre : nombres) {
+                cli.salida2.writeUTF(nombre);
             }
         }
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+}
+
 
     private void enviaMsg(String amigo, String mencli) {
         ServidorThread user = null;
@@ -141,7 +147,7 @@ public class ServidorThread extends Thread {
             try {
                 user = clientesActivos.get(i);
                 if (user.nameUser.equals(amigo)) {
-                    user.salida2.writeInt(3);//opcion de mensage amigo   
+                    user.salida2.writeInt(3);//opcion de mensaje amigo   
                     user.salida2.writeUTF(this.getNameUser());
                     user.salida2.writeUTF("" + this.getNameUser() + ">" + mencli);
                 }
@@ -150,4 +156,9 @@ public class ServidorThread extends Thread {
             }
         }
     }
+
+    public static Vector<ServidorThread> getClientesActivos() {
+        return clientesActivos;
+    }
+    
 }

@@ -28,15 +28,13 @@ public class ControlVentanaCliente implements ActionListener {
         this.cPrinc = cPrinc;
         cargarVistaCliente();
         cargarVistaPrivada();
-//        cPrinc.getcCliente().getCliente().setNombre(vCliente.nombreCliente());
-//        Cliente.setIPserver(vCliente.numeroIP());
+
         nombre = vCliente.nombreCliente();
         ip = vCliente.numeroIP();
-        
+
         System.out.println(ip);
         System.out.println(nombre);
-        
-        
+
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -50,11 +48,11 @@ public class ControlVentanaCliente implements ActionListener {
                 System.out.println(mensaje);
                 break;
             case "CLIENTE_PRIVADO":
-                
+
                 int pos = vCliente.getUsuarioSeleccionado();
                 if (pos >= 0) {
                     //destinatario = vPrivada.setDestinatario(nomUsers.get(pos));
-                    vPrivada.setAmigo(vCliente.getNomUsers().get(pos));  
+                    vPrivada.setAmigo(vCliente.getNomUsers().get(pos));
                     vPrivada.setVisible(true);
                 }
                 break;
@@ -77,7 +75,6 @@ public class ControlVentanaCliente implements ActionListener {
         vCliente.getBtnPrivado().setActionCommand("CLIENTE_PRIVADO");
         vCliente.getBtnPrivado().addActionListener(this);
 
-
     }
 
     public void cargarVistaPrivada() {
@@ -86,7 +83,10 @@ public class ControlVentanaCliente implements ActionListener {
         vPrivada.getBtnEnviar().setActionCommand("PRIVADO_ENVIAR");
         vPrivada.getBtnEnviar().addActionListener(this);
 
-        //vPrivada.setVisible(true);
+    }
+
+    public void actualizarListaUsuarios(String[] usuarios) {
+        vCliente.actualizarListaUsuarios(usuarios);
     }
 
     public VistaAyuda getvAyuda() {
@@ -113,12 +113,11 @@ public class ControlVentanaCliente implements ActionListener {
         this.vPrivada = vPrivada;
     }
 
-     public void mensageAmigo(String amigo,String msg)
-     {
-        vPrivada.setAmigo(amigo);           
-        vPrivada.mostrarMsg(msg);        
+    public void mensageAmigo(String amigo, String msg) {
+        vPrivada.setAmigo(amigo);
+        vPrivada.mostrarMsg(msg);
         vPrivada.setVisible(true);
-     }
+    }
 
     public String getNombre() {
         return nombre;
@@ -135,7 +134,5 @@ public class ControlVentanaCliente implements ActionListener {
     public void setIp(String ip) {
         this.ip = ip;
     }
-    
 
-    
 }

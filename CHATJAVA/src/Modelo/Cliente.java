@@ -25,7 +25,7 @@ public class Cliente {
     private static String IPserver;
 
     Socket comunication = null;//para la comunicacion
-    Socket comunication2 = null;//para recivir msg
+    Socket comunication2 = null;//para recibir msg
 
     public Cliente() {
     }
