@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Vista;
 
 import Control.ControlVentanaCliente;
@@ -25,6 +21,10 @@ public class VistaCliente extends JFrame {
     public VistaCliente(ControlVentanaCliente cVentana) {
         this.cVentana = cVentana;
         super("Cliente Chat");
+
+        // Establecer icono estilo WhatsApp
+        setIconImage(new ImageIcon(getClass().getResource("/resources/img3.png")).getImage());
+
         initializeComponents();
         setupLayout();
     }
@@ -67,12 +67,16 @@ public class VistaCliente extends JFrame {
 
         // Panel derecho (área de chat y panel inferior)
         JPanel panRight = new JPanel(new BorderLayout());
-        panRight.add(new JScrollPane(panMostrar), BorderLayout.CENTER);
+        JScrollPane scrollChat = new JScrollPane(panMostrar);
+        scrollChat.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panRight.add(scrollChat, BorderLayout.CENTER);
         panRight.add(panAbajo, BorderLayout.SOUTH);
 
         // Panel izquierdo (lista de usuarios y botón privado)
         JPanel panLeft = new JPanel(new BorderLayout());
-        panLeft.add(new JScrollPane(lstActivos), BorderLayout.CENTER);
+        JScrollPane scrollUsuarios = new JScrollPane(lstActivos);
+        scrollUsuarios.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panLeft.add(scrollUsuarios, BorderLayout.CENTER);
         panLeft.add(butPrivado, BorderLayout.NORTH);
 
         // Barra de menú
@@ -80,7 +84,6 @@ public class VistaCliente extends JFrame {
         JMenu menuAyuda = new JMenu("Ayuda");
         JMenuItem itemAyuda = new JMenuItem("Ayuda");
         itemAyuda.setActionCommand("AYUDA");
-        //itemAyuda.addActionListener(this::menuActionPerformed);
         menuAyuda.add(itemAyuda);
         barraMenu.add(menuAyuda);
 
@@ -94,25 +97,10 @@ public class VistaCliente extends JFrame {
         setLayout(new BorderLayout());
         add(barraMenu, BorderLayout.NORTH);
         add(splitCentral, BorderLayout.CENTER);
-
         setSize(600, 400);
         setMinimumSize(new Dimension(500, 300));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Scroll con borde redondeado y scroll suave
-        JScrollPane scrollChat = new JScrollPane(panMostrar);
-        scrollChat.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        JScrollPane scrollUsuarios = new JScrollPane(lstActivos);
-        scrollUsuarios.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-// Reemplaza los scrolls simples anteriores
-        panRight.add(scrollChat, BorderLayout.CENTER);
-        panLeft.add(scrollUsuarios, BorderLayout.CENTER);
-
-// Fondo general de la ventana
-        getContentPane().setBackground(new Color(220, 248, 198)); // tono verde claro
-
+        getContentPane().setBackground(new Color(220, 248, 198)); // verde claro estilo WhatsApp
     }
 
     public JTextArea getPanMostrar() {
@@ -163,7 +151,6 @@ public class VistaCliente extends JFrame {
         this.listModel = listModel;
     }
 
-    // Métodos para interactuar con el controlador
     public void setNombreUser(String user) {
         //lblNomUser.setText("Usuario " + user);
     }
@@ -223,18 +210,14 @@ public class VistaCliente extends JFrame {
     }
 
     public String nombreCliente() {
-        String nomCliente = JOptionPane.showInputDialog("Introducir Nick :");
-        return nomCliente;
+        return JOptionPane.showInputDialog("Introducir Nick :");
     }
 
     public String numeroIP() {
-        String IP = JOptionPane.showInputDialog("Introducir IP_SERVER :", "localhost");
-
-        return IP;
+        return JOptionPane.showInputDialog("Introducir IP_SERVER :", "localhost");
     }
 
     public Vector<String> getNomUsers() {
         return nomUsers;
     }
-
 }
