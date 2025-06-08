@@ -35,8 +35,27 @@ public class VistaCliente extends JFrame {
         butPrivado = new JButton("Privado");
         panMostrar = new JTextArea();
         panMostrar.setEditable(false);
+        panMostrar.setBackground(new Color(230, 255, 230)); // fondo estilo WhatsApp
+        panMostrar.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        panMostrar.setForeground(new Color(33, 33, 33));
+
+        // Personalización botones estilo WhatsApp
+        butEnviar.setBackground(new Color(37, 211, 102)); // verde WhatsApp
+        butEnviar.setForeground(Color.WHITE);
+        butEnviar.setFocusPainted(false);
+        butEnviar.setFont(new Font("Segoe UI", Font.BOLD, 13));
+
+        butPrivado.setBackground(new Color(18, 140, 126)); // tono más oscuro
+        butPrivado.setForeground(Color.WHITE);
+        butPrivado.setFocusPainted(false);
+        butPrivado.setFont(new Font("Segoe UI", Font.BOLD, 13));
+
         listModel = new DefaultListModel<>();
         lstActivos = new JList<>(listModel);
+        lstActivos.setBackground(new Color(245, 245, 245));
+        lstActivos.setSelectionBackground(new Color(37, 211, 102));
+        lstActivos.setSelectionForeground(Color.WHITE);
+        lstActivos.setFont(new Font("Segoe UI", Font.PLAIN, 13));
     }
 
     private void setupLayout() {
@@ -79,6 +98,21 @@ public class VistaCliente extends JFrame {
         setSize(600, 400);
         setMinimumSize(new Dimension(500, 300));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Scroll con borde redondeado y scroll suave
+        JScrollPane scrollChat = new JScrollPane(panMostrar);
+        scrollChat.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JScrollPane scrollUsuarios = new JScrollPane(lstActivos);
+        scrollUsuarios.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+// Reemplaza los scrolls simples anteriores
+        panRight.add(scrollChat, BorderLayout.CENTER);
+        panLeft.add(scrollUsuarios, BorderLayout.CENTER);
+
+// Fondo general de la ventana
+        getContentPane().setBackground(new Color(220, 248, 198)); // tono verde claro
+
     }
 
     public JTextArea getPanMostrar() {
@@ -169,7 +203,7 @@ public class VistaCliente extends JFrame {
 
     public void actualizarListaUsuarios(String[] usuarios) {
         Vector<String> nuevosUsuarios = new Vector<>(Arrays.asList(usuarios));
-        ponerActivos(nuevosUsuarios); 
+        ponerActivos(nuevosUsuarios);
     }
 
     public String getMensaje() {
