@@ -34,10 +34,17 @@ public class VistaCliente extends JFrame {
         butEnviar = new JButton("Enviar");
         butPrivado = new JButton("Privado");
         panMostrar = new JTextArea();
-        panMostrar.setEditable(false);
-        panMostrar.setBackground(new Color(230, 255, 230)); // fondo estilo WhatsApp
-        panMostrar.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        panMostrar.setForeground(new Color(33, 33, 33));
+        
+        // Área de texto de chat
+panMostrar = new JTextArea();
+    panMostrar.setEditable(false);
+    panMostrar.setOpaque(false); // Fondo transparente
+    panMostrar.setForeground(Color.BLACK); // Color visible sobre fondo claro
+    panMostrar.setFont(new Font("Segoe UI", Font.BOLD, 14));
+    panMostrar.setLineWrap(true);
+    panMostrar.setWrapStyleWord(true);
+
+
 
         // Personalización botones estilo WhatsApp
         butEnviar.setBackground(new Color(37, 211, 102)); // verde WhatsApp
@@ -57,51 +64,85 @@ public class VistaCliente extends JFrame {
         lstActivos.setSelectionForeground(Color.WHITE);
         lstActivos.setFont(new Font("Segoe UI", Font.PLAIN, 13));
     }
+private JLabel lblAdvertencia;
+private JLabel lblNombreUsuario;
 
-    private void setupLayout() {
-        // Panel inferior (área de mensaje y botón enviar)
-        JPanel panAbajo = new JPanel(new BorderLayout());
-        panAbajo.add(new JLabel("  Ingrese mensaje a enviar:"), BorderLayout.NORTH);
-        panAbajo.add(txtMensage, BorderLayout.CENTER);
-        panAbajo.add(butEnviar, BorderLayout.EAST);
+private void setupLayout() {
+    // Panel inferior (área de mensaje, botón enviar y advertencia)
+    JPanel panAbajo = new JPanel(new BorderLayout());
+    panAbajo.add(new JLabel("  Ingrese mensaje a enviar:"), BorderLayout.NORTH);
+    panAbajo.add(txtMensage, BorderLayout.CENTER);
+    panAbajo.add(butEnviar, BorderLayout.EAST);
 
-        // Panel derecho (área de chat y panel inferior)
-        JPanel panRight = new JPanel(new BorderLayout());
-        JScrollPane scrollChat = new JScrollPane(panMostrar);
-        scrollChat.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panRight.add(scrollChat, BorderLayout.CENTER);
-        panRight.add(panAbajo, BorderLayout.SOUTH);
+    // Etiqueta de advertencia (inicialmente vacía)
+    lblAdvertencia = new JLabel("");
+    lblAdvertencia.setForeground(Color.RED);
+    lblAdvertencia.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    panAbajo.add(lblAdvertencia, BorderLayout.SOUTH);
 
-        // Panel izquierdo (lista de usuarios y botón privado)
-        JPanel panLeft = new JPanel(new BorderLayout());
-        JScrollPane scrollUsuarios = new JScrollPane(lstActivos);
-        scrollUsuarios.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panLeft.add(scrollUsuarios, BorderLayout.CENTER);
-        panLeft.add(butPrivado, BorderLayout.NORTH);
+    // Etiqueta con el nombre del usuario
+    lblNombreUsuario = new JLabel("Usuario: ", SwingConstants.LEFT);
+    lblNombreUsuario.setFont(new Font("Segoe UI", Font.BOLD, 13));
+    lblNombreUsuario.setForeground(new Color(18, 140, 126));
 
-        // Barra de menú
-        JMenuBar barraMenu = new JMenuBar();
-        JMenu menuAyuda = new JMenu("Ayuda");
-        JMenuItem itemAyuda = new JMenuItem("Ayuda");
-        itemAyuda.setActionCommand("AYUDA");
-        menuAyuda.add(itemAyuda);
-        barraMenu.add(menuAyuda);
+    // Fondo tipo WhatsApp en el área de mensajes
+    JPanel fondoChat = new JPanel() {
+    private Image bg = new ImageIcon(getClass().getResource("/resources/whatsapp_bg.png")).getImage();
 
-        // SplitPane central (une izquierda y derecha)
-        JSplitPane splitCentral = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panLeft, panRight);
-        splitCentral.setDividerLocation(150);
-        splitCentral.setDividerSize(5);
-        splitCentral.setOneTouchExpandable(true);
-
-        // Configuración final de la ventana
-        setLayout(new BorderLayout());
-        add(barraMenu, BorderLayout.NORTH);
-        add(splitCentral, BorderLayout.CENTER);
-        setSize(600, 400);
-        setMinimumSize(new Dimension(500, 300));
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        getContentPane().setBackground(new Color(220, 248, 198)); // verde claro estilo WhatsApp
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        for (int x = 0; x < getWidth(); x += bg.getWidth(null)) {
+            for (int y = 0; y < getHeight(); y += bg.getHeight(null)) {
+                g.drawImage(bg, x, y, this);
+            }
+        }
     }
+};
+fondoChat.setLayout(new BorderLayout());
+fondoChat.add(panMostrar);
+
+    JScrollPane scrollChat = new JScrollPane(fondoChat);
+scrollChat.setOpaque(false);
+scrollChat.getViewport().setOpaque(false);
+
+
+    // Panel derecho (nombre usuario + chat + parte inferior)
+    JPanel panRight = new JPanel(new BorderLayout());
+    panRight.add(lblNombreUsuario, BorderLayout.NORTH);
+    panRight.add(scrollChat, BorderLayout.CENTER);
+    panRight.add(panAbajo, BorderLayout.SOUTH);
+
+    // Panel izquierdo (lista de usuarios y botón privado)
+    JPanel panLeft = new JPanel(new BorderLayout());
+    JScrollPane scrollUsuarios = new JScrollPane(lstActivos);
+    scrollUsuarios.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    panLeft.add(scrollUsuarios, BorderLayout.CENTER);
+    panLeft.add(butPrivado, BorderLayout.NORTH);
+
+    // Barra de menú
+    JMenuBar barraMenu = new JMenuBar();
+    JMenu menuAyuda = new JMenu("Ayuda");
+    JMenuItem itemAyuda = new JMenuItem("Ayuda");
+    itemAyuda.setActionCommand("AYUDA");
+    menuAyuda.add(itemAyuda);
+    barraMenu.add(menuAyuda);
+
+    // SplitPane central
+    JSplitPane splitCentral = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panLeft, panRight);
+    splitCentral.setDividerLocation(150);
+    splitCentral.setDividerSize(5);
+    splitCentral.setOneTouchExpandable(true);
+
+    // Ventana
+    setLayout(new BorderLayout());
+    add(barraMenu, BorderLayout.NORTH);
+    add(splitCentral, BorderLayout.CENTER);
+    setSize(600, 400);
+    setMinimumSize(new Dimension(500, 300));
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    getContentPane().setBackground(new Color(220, 248, 198));
+}
 
     public JTextArea getPanMostrar() {
         return panMostrar;
@@ -142,6 +183,10 @@ public class VistaCliente extends JFrame {
     public void setLstActivos(JList<String> lstActivos) {
         this.lstActivos = lstActivos;
     }
+
+    public void setNombreUsuario(String nombre) {
+    lblNombreUsuario.setText("Usuario: " + nombre);
+}
 
     public DefaultListModel<String> getListModel() {
         return listModel;

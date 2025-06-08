@@ -30,6 +30,7 @@ public class ControlVentanaCliente implements ActionListener {
         cargarVistaPrivada();
 
         nombre = vCliente.nombreCliente();
+        vCliente.setNombreUsuario(nombre);
         ip = vCliente.numeroIP();
 
         System.out.println(ip);
