@@ -38,38 +38,57 @@ public class VistaPrivada extends JFrame {
         butEnviar.setFont(new Font("Segoe UI", Font.BOLD, 13));
 
         panMostrar = new JTextArea();
-        panMostrar.setEditable(false);
-        panMostrar.setBackground(new Color(230, 255, 230)); // fondo verde claro
-        panMostrar.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        panMostrar.setForeground(new Color(33, 33, 33));
-        panMostrar.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+panMostrar.setEditable(false);
+panMostrar.setOpaque(false); // Fondo transparente
+panMostrar.setForeground(new Color(33, 33, 33));
+panMostrar.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+panMostrar.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+panMostrar.setLineWrap(true);
+panMostrar.setWrapStyleWord(true);
+
     }
 
     private void setupLayout() {
-        // Panel inferior (campo de texto y botón enviar)
-        JPanel panAbajo = new JPanel(new BorderLayout(5, 5));
-        JLabel lblMensaje = new JLabel("  Mensaje privado:");
-        lblMensaje.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        panAbajo.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        panAbajo.add(lblMensaje, BorderLayout.NORTH);
-        panAbajo.add(txtMensage, BorderLayout.CENTER);
-        panAbajo.add(butEnviar, BorderLayout.EAST);
+    // Panel inferior (campo de texto y botón enviar)
+    JPanel panAbajo = new JPanel(new BorderLayout(5, 5));
+    JLabel lblMensaje = new JLabel("  Mensaje privado:");
+    lblMensaje.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+    panAbajo.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+    panAbajo.add(lblMensaje, BorderLayout.NORTH);
+    panAbajo.add(txtMensage, BorderLayout.CENTER);
+    panAbajo.add(butEnviar, BorderLayout.EAST);
 
-        // Scroll decorado
-        JScrollPane scrollPane = new JScrollPane(panMostrar);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    // Panel personalizado con fondo de imagen
+    JPanel fondoChat = new JPanel() {
+        private Image bg = new ImageIcon(getClass().getResource("/resources/whatsapp_bg.png")).getImage();
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            for (int x = 0; x < getWidth(); x += bg.getWidth(null)) {
+                for (int y = 0; y < getHeight(); y += bg.getHeight(null)) {
+                    g.drawImage(bg, x, y, this);
+                }
+            }
+        }
+    };
+    fondoChat.setLayout(new BorderLayout());
+    fondoChat.add(panMostrar);
 
-        // Configuración principal
-        setLayout(new BorderLayout());
-        add(scrollPane, BorderLayout.CENTER);
-        add(panAbajo, BorderLayout.SOUTH);
+    JScrollPane scrollPane = new JScrollPane(fondoChat);
+    scrollPane.setOpaque(false);
+    scrollPane.getViewport().setOpaque(false);
+    scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Configuración de la ventana
-        getContentPane().setBackground(new Color(220, 248, 198)); // fondo tipo WhatsApp
-        setSize(400, 300);
-        setMinimumSize(new Dimension(300, 200));
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+    // Configuración principal
+    setLayout(new BorderLayout());
+    add(scrollPane, BorderLayout.CENTER);
+    add(panAbajo, BorderLayout.SOUTH);
+
+    // Configuración de la ventana
+    setSize(400, 300);
+    setMinimumSize(new Dimension(300, 200));
+    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    setLocationRelativeTo(null);
     }
 
     private void aplicarEstiloWhatsApp() {
